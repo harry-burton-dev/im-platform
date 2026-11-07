@@ -1,5 +1,11 @@
 # @augur/upgrades
 
+## 0.1.7
+
+### Patch Changes
+
+- 024e635: Preferences are never saved over before they have loaded, and telemetry starting no longer remounts the open app. Notifications aren't lost on reconnect, Home's cards unmount on a floor change, the leaver form keeps the agreed handover, Organisation says plainly that leavers are deleted, and failed reads no longer stop job tracking or hide installed apps.
+
 ## 0.1.6
 
 ### Patch Changes
