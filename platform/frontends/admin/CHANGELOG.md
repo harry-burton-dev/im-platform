@@ -1,5 +1,21 @@
 # @augur/admin
 
+## 0.19.0
+
+### Minor Changes
+
+- cd05e3b: Admin → Apps no longer keeps its own copy of an installed app's update controls (channel, policy, the version waiting, history, go back, Needs you): they are in the Upgrade Centre, and each installed app links there. Installing new apps, job steps, developers, previews and Remove stay in Admin.
+- 656f2d1: Leavers' accounts are deleted once the organisation's leaver retention has passed (ADR 0072). Identity checks every five minutes and, in an order it can resume, has Activity remove their personal values, forgets their preferences and teams, and deletes the Keycloak account; then it records `person.deleted`, which followers hear as `platform.person.deleted` (`PLATFORM_TOPICS.personDeleted`). A deployment admin who just entered their password can delete a leaver's account at once (`DELETE /v1/admin/people/{id}`). People shows when a leaver's account goes (contract 1.30.0, migration `lifecycle_005_deletion`).
+- 69bad0d: People can sign in with the organisation's Entra account. With `ENTRA_TENANT_ID`, `ENTRA_CLIENT_ID` and `ENTRA_CLIENT_SECRET` in `.env`, the realm job adds the organisation's single-tenant Entra as a sign-in, whose first sign-in links to the account with the same email, or makes one when nobody has it, with no password asked for. Taking the settings out turns it off and keeps the links. An account made this way is recorded as joined (`person.added` with `method: 'federated'`, so `platform.person.joined`), and a person shows `source: 'federated'` (contract 1.28.0, migration `lifecycle_004_federated`). Admin says how each person signs in.
+- f3fa13d: People shows who is **Locked** after repeated wrong passwords (and an admin can unlock them), who is **Leaving** on a last day an admin set (the leaver flow then runs on its own once that day is over, and can be cancelled until then), and who is **Idle**. A person's dialog lists their account's facts: state, last sign-in, invite, lockout, when an idle sign-in is warned and turned off or why it never is, and their last day. Identity: `POST /admin/people/{id}/unlock`, `lastDay` on the leaver flow and `DELETE /admin/people/{id}/leave`, `locked`, `leaving` and `idle` on a person (contract 1.27.0), migration `lifecycle_003_locked_leaving`.
+- 7723745: Admin → Organisation's settings grow (ADR 0042): the organisation's logo (a PNG, served to sign-in pages without a sign-in), a sign-in notice shown as Keycloak's Terms and Conditions step with "ask everyone again", the languages offered and the default, and, for a deployment admin who just entered their password, two steps for everyone and how long leavers and Activity are kept. AUGUR's own services read the retention at `GET /v1/organisation/policy`. The realm job applies the notice, languages, two steps for everyone and the organisation's name to Keycloak; the sign-in pages show the name and logo kept in Admin.
+
+  Admin → Organisation shows and changes them: a Logo section (drop a PNG), Sign-in notice, Languages, and Security and retention, which says who can change it and asks for the password again when it's needed. Activity says what changed in words.
+
+### Patch Changes
+
+- 024e635: Preferences are never saved over before they have loaded, and telemetry starting no longer remounts the open app. Notifications aren't lost on reconnect, Home's cards unmount on a floor change, the leaver form keeps the agreed handover, Organisation says plainly that leavers are deleted, and failed reads no longer stop job tracking or hide installed apps.
+
 ## 0.18.0
 
 ### Minor Changes

@@ -1,5 +1,17 @@
 # @augur/shell
 
+## 0.20.0
+
+### Minor Changes
+
+- 1ce4194: Urgent news (ADR 0044 D3, PER-283). A notification can be `urgent`, from AUGUR's own services only (an app's is refused, 403). The Upgrade Centre marks a halted release and a go-back that didn't finish urgent, and offers a feature preview, `urgent-letterbox`: with it on, the shell opens urgent news in a see-through letterbox over the work, one at a time with the rest in its queue, and steps it back to the edge rule until someone opens it. Events contract 1.14.0.
+
+  Not breaking: `NewNotification.urgent` in `@augur/service-kit` is a new optional field, so existing callers build and send as before.
+
+### Patch Changes
+
+- 024e635: Preferences are never saved over before they have loaded, and telemetry starting no longer remounts the open app. Notifications aren't lost on reconnect, Home's cards unmount on a floor change, the leaver form keeps the agreed handover, Organisation says plainly that leavers are deleted, and failed reads no longer stop job tracking or hide installed apps.
+
 ## 0.19.0
 
 ### Minor Changes
